@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Select a Role
+{% endblock %}
+
+{% block content %}
+  <div class="text-center mb-5">
+    <h1 class="display-4">Choose Your AI Persona</h1>
+    <p class="lead text-muted">Select a role from the list below to see its details.</p>
+  </div>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for role in roles %}
+      <div class="col">
+        <a href="{{ url_for('role_detail', role_id=role.id) }}" class="text-decoration-none">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ role.name }}</h5>
+              <p class="card-text">{{ role.description }}</p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

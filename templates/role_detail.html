@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {{ role.name }}
+{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <div class="card-header">
+      <h1 class="card-title mb-0">{{ role.name }}</h1>
+    </div>
+    <div class="card-body">
+      <h5 class="text-muted">Description</h5>
+      <p class="card-text">{{ role.description }}</p>
+      <hr>
+      <h5 class="text-muted">System Prompt</h5>
+      <pre class="card-text bg-dark text-white p-3 rounded"><code>{{ role.system_prompt }}</code></pre>
+    </div>
+    <div class="card-footer d-flex justify-content-between">
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to Roles</a>
+      <a href="{{ url_for('chat', role_id=role.id) }}" class="btn btn-primary">Chat with this Role →</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Chat with {{ role.name }}
+{% endblock %}
+
+{% block content %}
+<style>
+    .chat-container {
+        display: flex;
+        flex-direction: column;
+        height: 70vh;
+        border: 1px solid #333;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    .chat-header {
+        background-color: #1f1f1f;
+        padding: 1rem;
+        border-bottom: 1px solid #333;
+    }
+    .chat-history {
+        flex-grow: 1;
+        padding: 1rem;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+    .chat-message {
+        padding: 0.75rem 1rem;
+        border-radius: 12px;
+        max-width: 75%;
+    }
+    .user-message {
+        background-color: #3d5afe;
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 2px;
+    }
+    .ai-message {
+        background-color: #333;
+        color: #e0e0e0;
+        align-self: flex-start;
+        border-bottom-left-radius: 2px;
+    }
+    .chat-input {
+        border-top: 1px solid #333;
+        padding: 1rem;
+    }
+</style>
+
+<div class="chat-container">
+    <div class="chat-header">
+        <h3 class="mb-0">Chatting with: {{ role.name }}</h3>
+        <a href="{{ url_for('role_detail', role_id=role.id) }}" class="text-muted text-decoration-none">← Back to Details</a>
+    </div>
+
+    <div class="chat-history" id="chat-history">
+        {% for message in history %}
+            {% if message.type == 'human' %}
+                <div class="chat-message user-message">
+                    <strong>You:</strong> {{ message.content }}
+                </div>
+            {% elif message.type == 'ai' %}
+                <div class="chat-message ai-message">
+                    <strong>AI:</strong> {{ message.content }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="chat-input">
+        <form method="POST" action="{{ url_for('chat', role_id=role.id) }}" class="d-flex">
+            <input type="text" name="user_input" class="form-control me-2" placeholder="Ask a question..." autocomplete="off" required>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Scroll to the bottom of the chat history on page load
+    const chatHistory = document.getElementById('chat-history');
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+</script>
+{% endblock %}
